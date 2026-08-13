@@ -1,0 +1,33 @@
+name: Python Governance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  governance:
+    name: Python ${{ matrix.python-version }} governance
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Compile governance checker
+        run: python -m py_compile scripts/check_python_governance.py
+
+      - name: Run governance checker
+        run: python scripts/check_python_governance.py
