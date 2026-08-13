@@ -18,8 +18,9 @@
 - Reusable Python starter configuration under `templates/python/`.
 - Dependency-free `scripts/check_python_governance.py` for structural and AST-based policy checks.
 - GitHub Actions Python governance workflow covering Python 3.12, 3.13, and 3.14.
+- Expanded reusable governance standards, project profiles, repository checker, and repository-governance CI workflow.
 
 ### Changed
 - Marked creation of the `GPTOptimizedRepo` ChatGPT Project complete in `TODO.md`.
 - Updated `AGENTS.md` so supported agents apply the reusable Python standards and mechanical checks when modifying Python.
-- Updated README and TODO state to document the Python governance kit and remaining downstream validation work.
+- Updated README and TODO state to document the expanded governance framework and remaining downstream validation work.
