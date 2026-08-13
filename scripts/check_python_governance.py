@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -108,6 +109,7 @@ class PythonVisitor(ast.NodeVisitor):
         )
 
     def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> None:  # noqa: N802
+        self._check_public_signature(node)
         self.async_depth += 1
         self.generic_visit(node)
         self.async_depth -= 1
@@ -144,9 +146,6 @@ class PythonVisitor(ast.NodeVisitor):
         self._check_public_signature(node)
         self.generic_visit(node)
 
-    def visit_AsyncFunctionDef_signature(self, node: ast.AsyncFunctionDef) -> None:
-        self._check_public_signature(node)
-
     def _check_public_signature(
         self, node: ast.FunctionDef | ast.AsyncFunctionDef
     ) -> None:
@@ -178,26 +177,33 @@ def scan_python_file(path: Path) -> list[Finding]:
 
     visitor = PythonVisitor(path)
     visitor.visit(tree)
-
-    # AsyncFunctionDef needs the same public-signature check while retaining
-    # explicit async-depth handling above.
-    for node in ast.walk(tree):
-        if isinstance(node, ast.AsyncFunctionDef):
-            visitor._check_public_signature(node)
-
     return visitor.findings
+
+
+def tracked_paths(root: Path) -> list[Path]:
+    try:
+        result = subprocess.run(
+            ["git", "ls-files", "-z"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=False,
+        )
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        return []
+
+    return [root / raw.decode("utf-8") for raw in result.stdout.split(b"\0") if raw]
 
 
 def check_generated_files(root: Path) -> list[Finding]:
     findings: list[Finding] = []
-    for path in root.rglob("*"):
-        if ".git" in path.parts:
-            continue
-        if any(part in FORBIDDEN_TRACKABLE_PARTS for part in path.parts):
+    for path in tracked_paths(root):
+        relative_parts = path.relative_to(root).parts
+        if any(part in FORBIDDEN_TRACKABLE_PARTS for part in relative_parts):
             findings.append(
                 Finding(path, 1, "PYG100", "generated/cache path should not be committed")
             )
-        elif path.is_file() and path.suffix in {".pyc", ".pyo"}:
+        elif path.suffix in {".pyc", ".pyo"}:
             findings.append(
                 Finding(path, 1, "PYG101", "compiled Python artifact should not be committed")
             )
