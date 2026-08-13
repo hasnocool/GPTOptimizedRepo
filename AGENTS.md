@@ -12,9 +12,9 @@ This repository is a reference workspace for using ChatGPT Projects, Codex, Deep
 4. Prefer existing project conventions over introducing new ones.
 5. Preserve backwards compatibility unless the task explicitly requires a breaking change.
 6. Never commit credentials, tokens, secrets, private keys, `.env` contents, or generated credential files.
-7. When Python is introduced, target Python 3.12+.
-8. For asynchronous Python, use non-blocking I/O and thread-safe operations; move unavoidable blocking work off the event loop.
-9. Add or update tests for behavior changes.
+7. When Python is introduced, target Python 3.12+ and read `standards/PYTHON.md`.
+8. For asynchronous Python, also read `standards/ASYNC_PYTHON.md`; use non-blocking I/O and thread-safe operations and move unavoidable blocking work off the event loop.
+9. Add or update tests for behavior changes and follow `standards/TESTING.md` for Python work.
 10. Update documentation in the same change when behavior, workflow, architecture, or user-facing instructions change.
 
 ## Task lifecycle
@@ -42,12 +42,26 @@ For implementation work, use this sequence:
 
 When adding support for another harness, verify its current native instruction convention first. Prefer native `AGENTS.md` support when available and avoid full duplicated policy copies.
 
+## Python governance
+
+When creating or modifying Python:
+
+- `standards/PYTHON.md` is mandatory.
+- `standards/ASYNC_PYTHON.md` is additionally mandatory for concurrency, networking, subprocesses, filesystem work in async paths, databases, queues, workers, or background tasks.
+- `standards/TESTING.md`, `standards/SECURITY.md`, and `standards/PERFORMANCE.md` apply whenever their concerns are touched.
+- Prefer the reusable starter files under `templates/python/` for new repositories unless an established project convention should be preserved.
+- Run `python scripts/check_python_governance.py` for this governance repository.
+- In a conventional downstream Python repository, run `python scripts/check_python_governance.py --strict-project` in addition to Ruff, the configured type checker, and the test suite.
+- Do not disable mechanical checks merely to make a change pass. Fix the underlying issue or document a narrow, justified exception.
+
 ## Documentation governance
 
 - `README.md` describes the current user-facing state.
 - `TODO.md` describes planned work only; completed work should be removed or marked complete with a reference.
 - `CHANGELOG.md` records meaningful repository changes.
 - `docs/` holds deeper workflows, architecture, research, and operating guides.
+- `standards/` holds reusable engineering requirements.
+- `templates/` holds reusable starter configuration.
 - Do not allow code or workflow changes to make these documents stale.
 
 ## Codex operating rules
@@ -87,4 +101,4 @@ Scheduled Tasks should monitor external or connected state, not depend on ChatGP
 
 ## Definition of done
 
-A task is done only when its implementation, validation, documentation, and next-step state agree with each other.
+A task is done only when its implementation, validation, documentation, mechanical governance checks, and next-step state agree with each other.
