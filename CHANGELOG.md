@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [0.1.0] - 2026-08-13
 
 ### Added
 - Repository-level agent guidance in `AGENTS.md`.
