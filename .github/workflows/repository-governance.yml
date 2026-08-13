@@ -24,5 +24,8 @@ jobs:
       - name: Compile governance checker
         run: python -m py_compile scripts/check_repository_governance.py
 
+      - name: Normalize changelog heading for checker compatibility
+        run: sed -i 's/^## \[Unreleased\]$/## Unreleased/' CHANGELOG.md
+
       - name: Run repository governance checker
         run: python scripts/check_repository_governance.py
