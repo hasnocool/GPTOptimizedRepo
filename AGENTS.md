@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository is a reference workspace for using ChatGPT Projects, Codex, Deep Research, Work, GitHub, and Scheduled Tasks together without losing project context or letting documentation drift.
+This repository is a reference workspace for using ChatGPT Projects, Codex, Deep Research, Work, GitHub, Scheduled Tasks, and multiple coding-agent harnesses together without losing project context or letting documentation drift.
 
 ## Before every task
 
@@ -24,10 +24,23 @@ For implementation work, use this sequence:
 1. **Orient** — inspect architecture, open issues/PRs, TODOs, and recent changes.
 2. **Plan** — state assumptions, acceptance criteria, risks, and affected files.
 3. **Implement** — make the smallest complete change.
-4. **Validate** — run the most relevant tests, linters, type checks, and smoke checks available.
+4. **Validate** — run the most relevant tests, linters, type checks, and verification checks available.
 5. **Review** — inspect the final diff for regressions, secrets, generated junk, blocking I/O, and unnecessary scope.
 6. **Document** — update `README.md`, `CHANGELOG.md`, `TODO.md`, and affected docs.
 7. **Publish** — use a feature branch and pull request for non-trivial changes.
+
+## Agent compatibility
+
+`AGENTS.md` is the canonical policy source for every supported coding agent. Tool-specific files must contain only compatibility glue or genuine tool-specific deltas so governance does not drift.
+
+- **Codex:** use this root `AGENTS.md`.
+- **OpenCode:** use this file; `opencode.json` may include additional durable project documents.
+- **OpenClaude / Claude-style tools:** `CLAUDE.md` points back to this contract.
+- **Pi:** use this root `AGENTS.md` directly.
+- **Oh My Pi:** `.omp/AGENTS.md` provides native project context and `.omp/RULES.md` contains only the sticky hard requirements.
+- **Prime Intellect:** use this root `AGENTS.md`; Prime-specific workflow guidance may live under `.prime/skills/`.
+
+When adding support for another harness, verify its current native instruction convention first. Prefer native `AGENTS.md` support when available and avoid full duplicated policy copies.
 
 ## Documentation governance
 
