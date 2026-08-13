@@ -22,6 +22,7 @@ GitHub repository (durable source of truth)
         +-- .omp/ (Oh My Pi context + sticky rules)
         +-- .prime/ (Prime skill)
         +-- standards/ (reusable engineering standards)
+        +-- profiles/ (project-type governance selections)
         +-- templates/ (starter project configuration)
         +-- scripts/ (mechanical governance checks)
         +-- .github/workflows/ (CI enforcement)
@@ -43,6 +44,20 @@ GitHub repository (durable source of truth)
 - **Pi:** natively reads root `AGENTS.md`; no duplicate Pi policy is required.
 - **Oh My Pi:** uses `.omp/AGENTS.md` plus sticky `.omp/RULES.md`.
 - **Prime Intellect:** uses root `AGENTS.md` plus `.prime/skills/repo-governance/SKILL.md` for Prime-specific workflows.
+
+## Governance framework
+
+`docs/GOVERNANCE_FRAMEWORK.md` describes the reusable governance system. Standards now cover Python, async/concurrency, architecture, dependencies, security, performance, testing, APIs, databases, configuration, observability, reliability, documentation, releases, Git/PRs, repository hygiene, licensing/provenance, deployment, CLI behavior, AI/LLM integrations, and coding-agent behavior. It also defines cross-cutting supply-chain and frontend baselines.
+
+Profiles under `profiles/` select practical policy combinations for Python services, Python CLIs, FastAPI services, scrapers/crawlers, local AI services, and dashboards. The framework document also defines the combined policy for data-pipeline work.
+
+Repository-wide enforcement:
+
+```bash
+python scripts/check_repository_governance.py
+```
+
+The repository checker validates required durable docs, tracked generated artifacts, large tracked files, GitHub Actions permissions/action references, selected container basics, and changelog structure.
 
 ## Python governance kit
 
@@ -82,8 +97,9 @@ Then run the repository's configured type checker and tests.
 4. Use `docs/CODEX_WORKFLOW.md` for implementation tasks.
 5. Use Deep Research for external uncertainty and save durable findings under `research/`.
 6. Use `docs/SCHEDULED_TASKS.md` for recurring and conditional monitoring design.
-7. For Python work, read the applicable files under `standards/` and run the mechanical governance checks.
-8. Keep `TODO.md`, `CHANGELOG.md`, and this README aligned with repository changes.
+7. Select the applicable standards/profile and run repository governance checks for engineering changes.
+8. For Python work, also run the Python governance checks.
+9. Keep `TODO.md`, `CHANGELOG.md`, and this README aligned with repository changes.
 
 ## Operating principle
 
