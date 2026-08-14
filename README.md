@@ -1,6 +1,6 @@
 # GPTOptimizedRepo
 
-A reference repository for getting more value from ChatGPT Plus across software development, research, project context, and recurring monitoring.
+A reference repository for getting more value from ChatGPT Plus across software development, research, project context, recurring monitoring, and consistent multi-agent engineering governance.
 
 This repository is structured so ChatGPT Projects, Codex, Deep Research, Work, GitHub, Scheduled Tasks, and multiple terminal coding agents can share one durable source of truth.
 
@@ -21,6 +21,11 @@ GitHub repository (durable source of truth)
         +-- opencode.json (OpenCode project configuration)
         +-- .omp/ (Oh My Pi context + sticky rules)
         +-- .prime/ (Prime skill)
+        +-- standards/ (reusable engineering standards)
+        +-- profiles/ (project-type governance selections)
+        +-- templates/ (starter project configuration)
+        +-- scripts/ (mechanical governance checks)
+        +-- .github/workflows/ (CI enforcement)
         +-- README.md / TODO.md / CHANGELOG.md
         +-- docs/ / research/
         |
@@ -40,6 +45,50 @@ GitHub repository (durable source of truth)
 - **Oh My Pi:** uses `.omp/AGENTS.md` plus sticky `.omp/RULES.md`.
 - **Prime Intellect:** uses root `AGENTS.md` plus `.prime/skills/repo-governance/SKILL.md` for Prime-specific workflows.
 
+## Governance framework
+
+`docs/GOVERNANCE_FRAMEWORK.md` describes the reusable governance system. Standards now cover Python, async/concurrency, architecture, dependencies, security, performance, testing, APIs, databases, configuration, observability, reliability, documentation, releases, Git/PRs, repository hygiene, licensing/provenance, deployment, CLI behavior, AI/LLM integrations, and coding-agent behavior. It also defines cross-cutting supply-chain and frontend baselines.
+
+Profiles under `profiles/` select practical policy combinations for Python services, Python CLIs, FastAPI services, scrapers/crawlers, local AI services, and dashboards. The framework document also defines the combined policy for data-pipeline work.
+
+Repository-wide enforcement:
+
+```bash
+python scripts/check_repository_governance.py
+```
+
+The repository checker validates required durable docs, tracked generated artifacts, large tracked files, GitHub Actions permissions/action references, selected container basics, and changelog structure.
+
+## Python governance kit
+
+The repository includes a reusable Python governance profile intended to be copied or adapted into other repositories:
+
+- `standards/PYTHON.md` — Python 3.12+, organization, typing, dependencies, errors, configuration, logging, and definition-of-done rules.
+- `standards/ASYNC_PYTHON.md` — non-blocking asyncio, structured concurrency, thread safety, bounded concurrency, timeouts, retries, subprocesses, and shutdown.
+- `standards/TESTING.md` — deterministic tests, regression coverage, async testing, and performance-test guidance.
+- `standards/SECURITY.md` — safe input handling, secrets, SQL, subprocesses, deserialization, paths, and resource bounds.
+- `standards/PERFORMANCE.md` — CPU, memory, disk, database, and network-efficiency rules.
+- `templates/python/pyproject.toml` — modern starter configuration for Python 3.12+, Ruff, mypy, and pytest.
+- `templates/python/.gitignore` — standard Python caches, virtual environments, build outputs, and local-secret exclusions.
+- `scripts/check_python_governance.py` — dependency-free AST/repository checks for common policy violations.
+- `.github/workflows/python-governance.yml` — runs the governance checker on Python 3.12, 3.13, and 3.14.
+
+For this repository:
+
+```bash
+python scripts/check_python_governance.py
+```
+
+For a conventional downstream Python repository using `src/`, `tests/`, and `pyproject.toml`:
+
+```bash
+python scripts/check_python_governance.py --strict-project
+ruff format --check .
+ruff check .
+```
+
+Then run the repository's configured type checker and tests.
+
 ## Start here
 
 1. Use the ChatGPT Project named `GPTOptimizedRepo` with project-only memory.
@@ -48,7 +97,9 @@ GitHub repository (durable source of truth)
 4. Use `docs/CODEX_WORKFLOW.md` for implementation tasks.
 5. Use Deep Research for external uncertainty and save durable findings under `research/`.
 6. Use `docs/SCHEDULED_TASKS.md` for recurring and conditional monitoring design.
-7. Keep `TODO.md`, `CHANGELOG.md`, and this README aligned with repository changes.
+7. Select the applicable standards/profile and run repository governance checks for engineering changes.
+8. For Python work, also run the Python governance checks.
+9. Keep `TODO.md`, `CHANGELOG.md`, and this README aligned with repository changes.
 
 ## Operating principle
 
